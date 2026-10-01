@@ -23,12 +23,11 @@ footer{text-align:center;color:#98a2b3;font-size:11px;margin-top:22px}
 <div class="wrap">
 <section class="hero">
 <div class="kicker">Financiamento do nosso carro</div>
-<h1>48 parcelas</h1><div class="sub">Controle simples do que realmente pagamos</div>
+<h1>48 parcelas</h1><div class="sub">Acompanhe cada parcela e quanto estamos economizando</div>
 <div class="herorow"><div><div class="small">Parcelas pagas</div><div class="big" id="count">1/48</div></div><div style="text-align:right"><div class="small">Progresso</div><b id="pct">2,1%</b></div></div>
 <div class="progress"><div id="bar" style="width:0"></div></div><div class="pmeta"><span>30/09/2026</span><span>22/09/2030</span></div>
 </section>
-<div class="grid">
-<div class="card"><div class="label">Total realmente pago</div><div class="value" id="paidTotal">R$ 0,00</div></div>
+<div class="card" style="grid-column:1/-1;background:linear-gradient(135deg,#fff,#f7f9fc)"><div class="label">Valor total do financiamento</div><div class="value" id="financedTotal">R$ 69.032,64</div><div style="font-size:11px;color:#667085;margin-top:3px">48 parcelas de R$ 1.438,18</div></div><div class="card"><div class="label">Total realmente pago</div><div class="value" id="paidTotal">R$ 0,00</div></div>
 <div class="card"><div class="label">Economia</div><div class="value green" id="savedTotal">R$ 0,00</div></div>
 <div class="card"><div class="label">Nominal em aberto</div><div class="value" id="openTotal">R$ 0,00</div></div>
 <div class="card"><div class="label">Parcelas restantes</div><div class="value" id="remaining">47</div></div>
@@ -50,7 +49,7 @@ footer{text-align:center;color:#98a2b3;font-size:11px;margin-top:22px}
 </div></div>
 
 <script>
-const TOTAL=48,NOMINAL=1438.18,KEY="nosso_carro_v3";
+const TOTAL=48,NOMINAL=1438.18,FINANCED=69032.64,KEY="nosso_carro_v4";
 let db=JSON.parse(localStorage.getItem(KEY)||"null")||{},current=0;
 const money=n=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(n||0);
 const dateFor=i=>{let d=new Date(2026,9,22);d.setMonth(d.getMonth()+i-1);return d};
@@ -60,9 +59,9 @@ function persist(){localStorage.setItem(KEY,JSON.stringify(db))}
 function render(){
  let paid=0,tp=0,save=0;for(let i=1;i<=TOTAL;i++){if(db[i]?.paid){paid++;tp+=db[i].amount;save+=Math.max(0,NOMINAL-db[i].amount)}}
  document.getElementById("count").textContent=paid+"/"+TOTAL;let p=paid/TOTAL*100;document.getElementById("pct").textContent=p.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%";document.getElementById("bar").style.width=p+"%";
- document.getElementById("paidTotal").textContent=money(tp);document.getElementById("savedTotal").textContent=money(save);document.getElementById("openTotal").textContent=money((TOTAL-paid)*NOMINAL);document.getElementById("remaining").textContent=TOTAL-paid;
+ document.getElementById("paidTotal").textContent=money(tp);document.getElementById("savedTotal").textContent=money(save);document.getElementById("financedTotal").textContent=money(FINANCED);document.getElementById("openTotal").textContent=money((TOTAL-paid)*NOMINAL);document.getElementById("remaining").textContent=TOTAL-paid;
  let n=0;for(let i=1;i<=TOTAL;i++)if(!db[i]?.paid){n=i;break}
- document.getElementById("next").innerHTML=n?`<div><b>Parcela ${String(n).padStart(2,"0")}</b><div class="date">Vencimento: ${dateFor(n).toLocaleDateString("pt-BR")}</div></div><div class="badge">${money(NOMINAL)}</div>`:"<b>Financiamento quitado 🎉</b>";
+ document.getElementById("next").innerHTML=n?`<div><b>Parcela ${String(n).padStart(2,"0")}</b><div class="date">Vencimento: ${dateFor(n).toLocaleDateString("pt-BR")}</div><div class="date">Valor nominal: ${money(NOMINAL)}</div></div><div class="badge">${money(NOMINAL)}</div>`:"<b>Financiamento quitado 🎉</b>";
  let list=document.getElementById("list");list.innerHTML="";
  for(let i=1;i<=TOTAL;i++){let x=db[i],d=dateFor(i),b=String(i).padStart(2,"0"),el=document.createElement("button");el.className="installment"+(x?.paid?" paid":"");el.onclick=()=>open(i);el.innerHTML=`<div class="num">${x?.paid?"✓":b}</div><div class="main"><div class="ititle">Parcela ${b}</div><div class="idate">${d.toLocaleDateString("pt-BR")}</div></div><div class="right">${x?.paid?`<div class="ival">${money(x.amount)}</div><div class="save">${Math.max(0,NOMINAL-x.amount)>0?"− "+money(Math.max(0,NOMINAL-x.amount))+" de economia":"Sem desconto"}</div>`:`<div class="ival">${money(NOMINAL)}</div>`}</div><div class="chev">›</div>`;list.appendChild(el)}
 }
