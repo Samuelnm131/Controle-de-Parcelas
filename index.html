@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>Nosso Carro — 48 parcelas</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--text:#101828;--muted:#667085;--line:#e7eaf0;--blue:#1769ff;--green:#12a150;--greenbg:#eaf8ef;--orange:#c96a00;--orangebg:#fff4e5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:720px;margin:auto;padding:16px 16px 40px}
+.hero{background:linear-gradient(145deg,#0b1220,#17243a 65%,#1e3b68);color:#fff;border-radius:28px;padding:24px 22px 22px;box-shadow:0 12px 35px #10182812}
+.kicker{font-size:12px;text-transform:uppercase;letter-spacing:.12em;opacity:.7;font-weight:700}h1{font-size:26px;margin:6px 0}.sub{opacity:.72;font-size:14px}.herorow{display:flex;justify-content:space-between;align-items:end;margin-top:22px}.big{font-size:34px;font-weight:850}.small{font-size:12px;opacity:.65}.progress{height:9px;background:#ffffff22;border-radius:99px;margin-top:15px;overflow:hidden}.progress>div{height:100%;background:#fff;border-radius:99px}.pmeta{display:flex;justify-content:space-between;font-size:12px;opacity:.7;margin-top:7px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}.label{font-size:12px;color:var(--muted);font-weight:700}.value{font-size:20px;font-weight:850;margin-top:5px}.green{color:var(--green)}
+.section{margin-top:20px}.head{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px}.title{font-size:17px;font-weight:850}
+.next{display:flex;justify-content:space-between;align-items:center}.date{font-size:13px;color:var(--muted);margin-top:3px}.badge{padding:7px 10px;border-radius:99px;background:var(--orangebg);color:var(--orange);font-size:12px;font-weight:800}
+.list{display:grid;gap:9px}.installment{width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:18px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer}.installment.paid{border-color:#d7efdf;background:#fbfffc}.num{width:42px;height:42px;border-radius:14px;background:#eef3ff;color:var(--blue);display:grid;place-items:center;font-weight:850;font-size:13px;flex:none}.paid .num{background:var(--greenbg);color:var(--green)}.main{flex:1;min-width:0}.ititle{font-weight:800;font-size:14px}.idate{font-size:12px;color:var(--muted);margin-top:3px}.right{text-align:right}.ival{font-weight:800;font-size:14px}.save{font-size:11px;color:var(--green);font-weight:750;margin-top:3px}.chev{color:#98a2b3;font-size:20px}
+footer{text-align:center;color:#98a2b3;font-size:11px;margin-top:22px}
+.back{position:fixed;inset:0;background:#02081799;display:none;align-items:end;justify-content:center;z-index:5}.back.show{display:flex}.modal{width:min(720px,100%);background:#fff;border-radius:28px 28px 0 0;padding:20px 18px 28px;max-height:92vh;overflow:auto}.mtop{display:flex;justify-content:space-between;align-items:center}.mtop h2{margin:0;font-size:21px}.close{border:0;background:#f1f3f7;width:38px;height:38px;border-radius:50%;font-size:20px}.meta{background:#f6f8fb;border-radius:17px;padding:13px;margin:16px 0}.row{display:flex;justify-content:space-between;margin:6px 0;font-size:13px}.row span{color:var(--muted)}label{display:block;font-size:12px;font-weight:800;margin:13px 0 6px}input{width:100%;border:1px solid #d7dce5;border-radius:14px;padding:13px;font:inherit;outline:none}input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1769ff18}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}.btn{border:0;border-radius:14px;padding:13px;font-weight:800}.primary{background:var(--blue);color:white}.secondary{background:#eef1f5;color:#344054}.danger{background:#fff0f0;color:#b42318;width:100%;margin-top:9px}.saved{background:var(--greenbg);color:#087a3d;border-radius:15px;padding:12px;margin-top:14px;font-size:13px;font-weight:700}.note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.4}
+@media(min-width:650px){.back{align-items:center;padding:20px}.modal{border-radius:28px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="kicker">Financiamento do nosso carro</div>
+<h1>48 parcelas</h1><div class="sub">Controle simples do que realmente pagamos</div>
+<div class="herorow"><div><div class="small">Parcelas pagas</div><div class="big" id="count">1/48</div></div><div style="text-align:right"><div class="small">Progresso</div><b id="pct">2,1%</b></div></div>
+<div class="progress"><div id="bar" style="width:0"></div></div><div class="pmeta"><span>30/09/2026</span><span>22/09/2030</span></div>
+</section>
+<div class="grid">
+<div class="card"><div class="label">Total realmente pago</div><div class="value" id="paidTotal">R$ 0,00</div></div>
+<div class="card"><div class="label">Economia</div><div class="value green" id="savedTotal">R$ 0,00</div></div>
+<div class="card"><div class="label">Nominal em aberto</div><div class="value" id="openTotal">R$ 0,00</div></div>
+<div class="card"><div class="label">Parcelas restantes</div><div class="value" id="remaining">47</div></div>
+</div>
+<section class="section"><div class="head"><div class="title">Próxima parcela</div></div><div class="card next" id="next"></div></section>
+<section class="section"><div class="head"><div class="title">Todas as parcelas</div><div class="label">Toque para abrir</div></div><div class="list" id="list"></div></section>
+<footer>O Santander informa o valor de antecipação. Aqui registramos o que realmente foi pago.</footer>
+</div>
+
+<div class="back" id="back"><div class="modal">
+<div class="mtop"><h2 id="mtitle">Parcela</h2><button class="close" id="close">×</button></div>
+<div class="meta" id="meta"></div>
+<label>Valor que realmente paguei</label><input id="amount" inputmode="decimal" placeholder="Ex.: 641,93">
+<label>Data do pagamento</label><input id="date" type="date">
+<div id="saved"></div>
+<div class="actions"><button class="btn secondary" id="cancel">Cancelar</button><button class="btn primary" id="save">Salvar pagamento</button></div>
+<button class="btn danger" id="remove" style="display:none">Apagar registro desta parcela</button>
+<div class="note">A economia é calculada automaticamente: valor nominal − valor pago. Você pode pagar qualquer parcela fora de ordem.</div>
+</div></div>
+
+<script>
+const TOTAL=48,NOMINAL=1438.18,KEY="nosso_carro_v3";
+let db=JSON.parse(localStorage.getItem(KEY)||"null")||{},current=0;
+const money=n=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(n||0);
+const dateFor=i=>{let d=new Date(2026,9,22);d.setMonth(d.getMonth()+i-1);return d};
+const br=s=>s?new Date(s+"T12:00:00").toLocaleDateString("pt-BR"):"";
+const parse=s=>Number(String(s).replace(/\./g,"").replace(",",".").replace(/[^0-9.-]/g,""))||0;
+function persist(){localStorage.setItem(KEY,JSON.stringify(db))}
+function render(){
+ let paid=0,tp=0,save=0;for(let i=1;i<=TOTAL;i++){if(db[i]?.paid){paid++;tp+=db[i].amount;save+=Math.max(0,NOMINAL-db[i].amount)}}
+ document.getElementById("count").textContent=paid+"/"+TOTAL;let p=paid/TOTAL*100;document.getElementById("pct").textContent=p.toLocaleString("pt-BR",{maximumFractionDigits:1})+"%";document.getElementById("bar").style.width=p+"%";
+ document.getElementById("paidTotal").textContent=money(tp);document.getElementById("savedTotal").textContent=money(save);document.getElementById("openTotal").textContent=money((TOTAL-paid)*NOMINAL);document.getElementById("remaining").textContent=TOTAL-paid;
+ let n=0;for(let i=1;i<=TOTAL;i++)if(!db[i]?.paid){n=i;break}
+ document.getElementById("next").innerHTML=n?`<div><b>Parcela ${String(n).padStart(2,"0")}</b><div class="date">Vencimento: ${dateFor(n).toLocaleDateString("pt-BR")}</div></div><div class="badge">${money(NOMINAL)}</div>`:"<b>Financiamento quitado 🎉</b>";
+ let list=document.getElementById("list");list.innerHTML="";
+ for(let i=1;i<=TOTAL;i++){let x=db[i],d=dateFor(i),b=String(i).padStart(2,"0"),el=document.createElement("button");el.className="installment"+(x?.paid?" paid":"");el.onclick=()=>open(i);el.innerHTML=`<div class="num">${x?.paid?"✓":b}</div><div class="main"><div class="ititle">Parcela ${b}</div><div class="idate">${d.toLocaleDateString("pt-BR")}</div></div><div class="right">${x?.paid?`<div class="ival">${money(x.amount)}</div><div class="save">${Math.max(0,NOMINAL-x.amount)>0?"− "+money(Math.max(0,NOMINAL-x.amount))+" de economia":"Sem desconto"}</div>`:`<div class="ival">${money(NOMINAL)}</div>`}</div><div class="chev">›</div>`;list.appendChild(el)}
+}
+function open(i){current=i;let x=db[i],d=dateFor(i);document.getElementById("mtitle").textContent="Parcela "+String(i).padStart(2,"0");document.getElementById("meta").innerHTML=`<div class="row"><span>Valor nominal</span><b>${money(NOMINAL)}</b></div><div class="row"><span>Vencimento</span><b>${d.toLocaleDateString("pt-BR")}</b></div>`;document.getElementById("amount").value=x?.paid?x.amount.toFixed(2).replace(".",","):"";document.getElementById("date").value=x?.date||"";document.getElementById("remove").style.display=x?.paid?"block":"none";document.getElementById("saved").innerHTML=x?.paid?`<div class="saved">Registrada: ${money(x.amount)} em ${br(x.date)} · economia ${money(Math.max(0,NOMINAL-x.amount))}</div>`:"";document.getElementById("back").classList.add("show")}
+function close(){document.getElementById("back").classList.remove("show")}
+document.getElementById("close").onclick=close;document.getElementById("cancel").onclick=close;document.getElementById("back").onclick=e=>{if(e.target.id==="back")close()};
+document.getElementById("save").onclick=()=>{let amount=parse(document.getElementById("amount").value),date=document.getElementById("date").value;if(!amount||!date){alert("Informe o valor pago e a data.");return}db[current]={paid:true,amount,date};persist();close();render()};
+document.getElementById("remove").onclick=()=>{if(confirm("Apagar o registro desta parcela?")){delete db[current];persist();close();render()}};
+if(!db[1]){db[1]={paid:true,amount:1420.71,date:"2026-09-30"};persist()}render();
+</script>
+</body></html>
